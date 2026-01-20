@@ -1,3 +1,6 @@
+pub mod cli;
+
 fn main() {
-    println!("Hello, world!");
+    let command = cli::build();
+    cli::dispatch(command);
 }

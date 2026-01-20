@@ -1,2 +1,3 @@
 # backspace-rs
-Command-Line Type Test tool
+
+Command-Line Typing Test tool
