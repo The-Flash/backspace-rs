@@ -1,6 +1,7 @@
 use clap::Parser;
 
-use super::cli::{Cli, Commands, TestSubcommands};
+use super::cli::{Cli, Commands};
+use crate::commands::typing_tests;
 
 /// Builds command line arguments
 pub fn build() -> Commands {
@@ -11,11 +12,6 @@ pub fn build() -> Commands {
 /// Dispatches commands based on user input
 pub fn dispatch(command: Commands) {
     match command {
-        Commands::Test { commands } => match commands {
-            TestSubcommands::Ls => {
-                println!("Listing available typing tests...");
-                // Here you would add the logic to list the typing tests
-            }
-        },
+        Commands::Test { commands } => typing_tests::handle(commands),
     }
 }
