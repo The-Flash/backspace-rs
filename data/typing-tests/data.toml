@@ -1,179 +1,179 @@
 [[tests]]
 id = "e001"
-name = "Focus and Precision"
+title = "Focus and Precision"
 difficulty = "easy"
-text = """
+content = """
 Typing is not merely about speed but about sustained focus and precision over time. When a typist slows down slightly and pays attention to each character, the overall result is often faster and cleaner. Errors introduce hesitation, and hesitation breaks rhythm. A consistent pace allows the hands to move naturally across the keyboard without conscious effort. Over long sessions, this calm approach reduces fatigue and frustration. Practicing accuracy first builds a strong foundation that supports higher speeds later. In the terminal, where feedback is immediate and unforgiving, precision becomes even more important. Each keystroke matters, and each correction costs more than it seems.
 """
 tags = []
 
 [[tests]]
 id = "e002"
-name = "Building Typing Endurance"
+title = "Building Typing Endurance"
 difficulty = "easy"
-text = """
+content = """
 Endurance is a critical but often overlooked aspect of typing skill. Many people can type quickly for short bursts, but maintaining consistency over several minutes requires discipline. As sessions grow longer, small inefficiencies compound into noticeable strain. Proper posture, relaxed hands, and steady breathing all contribute to better performance. Terminal typing tools emphasize this reality by removing distractions and forcing the typist to confront their habits. Over time, endurance training improves not only typing speed but also mental focus. The goal is not to rush, but to remain stable from the first word to the last.
 """
 tags = []
 
 [[tests]]
 id = "e003"
-name = "Accuracy Before Speed"
+title = "Accuracy Before Speed"
 difficulty = "easy"
-text = """
+content = """
 Many beginners believe that typing faster will naturally lead to improvement, but the opposite is often true. Speed achieved without accuracy quickly collapses under pressure. Each mistake requires correction, and correction interrupts flow. By focusing on accuracy first, a typist builds reliable muscle memory. This reliability allows speed to emerge naturally over time. Terminal-based typing reinforces this lesson because errors are immediately visible. There are no animations or visual distractions to hide mistakes. What remains is a clear record of every incorrect keystroke and every unnecessary backspace.
 """
 tags = []
 
 [[tests]]
 id = "e004"
-name = "Rhythm and Flow"
+title = "Rhythm and Flow"
 difficulty = "easy"
-text = """
+content = """
 Typing rhythm is similar to musical rhythm. It relies on timing, consistency, and awareness. When the rhythm breaks, errors increase and confidence drops. A steady tempo allows the hands to anticipate movement rather than react to it. Practicing with longer texts helps develop this sense of flow. Instead of focusing on individual words, the typist begins to process phrases and sentences as cohesive units. Over time, this shift reduces cognitive load and increases comfort. Flow is not forced; it emerges when technique and attention align.
 """
 tags = []
 
 [[tests]]
 id = "e005"
-name = "Terminal Discipline"
+title = "Terminal Discipline"
 difficulty = "easy"
-text = """
+content = """
 Working in a terminal environment encourages discipline. There are fewer visual cues and less tolerance for mistakes. This simplicity forces the typist to rely on skill rather than assistance. Long typing exercises in the terminal reveal weaknesses that shorter tests hide. Fatigue, hesitation, and overuse of backspace become obvious. By confronting these patterns directly, improvement becomes measurable. Discipline in typing mirrors discipline in programming: small, careful actions lead to reliable outcomes. The terminal rewards patience and consistency.
 """
 tags = []
 
 [[tests]]
 id = "e006"
-name = "Consistency Over Time"
+title = "Consistency Over Time"
 difficulty = "medium"
-text = """
+content = """
 Consistency is the defining trait of skilled typists. They may not always type at maximum speed, but they maintain a stable pace across long sessions. This stability reduces error rates and mental strain. Medium-length essays test this ability by removing the excitement of short challenges. As the text continues, the temptation to rush grows stronger. Resisting that urge requires awareness and control. By practicing consistency, typists learn to trust their muscle memory. Over time, this trust translates into smoother input and fewer corrections.
 """
 tags = []
 
 [[tests]]
 id = "e007"
-name = "Mental Load"
+title = "Mental Load"
 difficulty = "medium"
-text = """
+content = """
 Typing engages both the mind and the body. The brain must read, predict, and coordinate while the hands execute precise movements. When mental load increases, errors become more likely. Long-form typing highlights this relationship clearly. Complex sentences demand attention, while fatigue challenges focus. Developing the ability to stay calm under this load is essential. The terminal environment amplifies mistakes, making it an effective training ground. With practice, the mind learns to stay ahead of the hands, guiding them smoothly across the keyboard.
 """
 tags = []
 
 [[tests]]
 id = "e008"
-name = "Backspace Awareness"
+title = "Backspace Awareness"
 difficulty = "medium"
-text = """
+content = """
 Backspace is a powerful tool, but overuse signals inefficiency. Each correction represents lost time and broken rhythm. Long typing sessions make this cost obvious. When mistakes accumulate, the typist may become trapped in a cycle of correction and hesitation. Awareness is the first step toward improvement. By slowing slightly and anticipating difficult words, the need for backspace decreases. Over time, disciplined typing replaces reactive correction. The goal is not perfection, but deliberate control over errors.
 """
 tags = []
 
 [[tests]]
 id = "e009"
-name = "Typing as a Skill"
+title = "Typing as a Skill"
 difficulty = "medium"
-text = """
+content = """
 Typing is a learned skill, not an innate talent. Like any skill, it improves through structured practice and honest feedback. Long essays provide both. They reveal weaknesses in stamina, accuracy, and attention. Unlike short tests, essays demand commitment from start to finish. This commitment mirrors real-world typing tasks such as writing documentation or code comments. Practicing in this format prepares typists for practical scenarios. Improvement comes gradually, through repetition and reflection rather than shortcuts.
 """
 tags = []
 
 [[tests]]
 id = "e010"
-name = "Sustained Attention"
+title = "Sustained Attention"
 difficulty = "medium"
-text = """
+content = """
 Sustained attention is difficult in an age of constant distraction. Typing long passages trains this ability directly. The terminal offers no notifications, no visual rewards, and no interruptions. What remains is the text and the typist. Maintaining focus across many sentences requires intention. Each lapse results in an error that must be corrected. Over time, this feedback loop strengthens attention. Typists learn to recognize when their mind drifts and to bring it back deliberately.
 """
 tags = []
 
 [[tests]]
 id = "e011"
-name = "Precision Under Fatigue"
+title = "Precision Under Fatigue"
 difficulty = "hard"
-text = """
+content = """
 Fatigue exposes weaknesses in typing technique. As hands tire, errors increase and rhythm breaks down. Long, demanding texts push typists into this state deliberately. The challenge is to maintain precision even as comfort decreases. Proper technique becomes essential. Relaxed shoulders, light keystrokes, and steady breathing help counter fatigue. The terminal environment makes every mistake visible, reinforcing the cost of poor habits. Training under fatigue builds resilience and confidence that transfers to real work.
 """
 tags = []
 
 [[tests]]
 id = "e012"
-name = "Terminal Minimalism"
+title = "Terminal Minimalism"
 difficulty = "hard"
-text = """
+content = """
 Minimalism is a defining feature of terminal tools. Without visual clutter, performance depends entirely on the user. Long typing exercises embrace this philosophy. There are no progress bars or animations to provide encouragement. The only measure is the text itself. This simplicity can feel uncomfortable at first. Over time, it becomes freeing. Typists learn to rely on internal rhythm rather than external feedback. The result is greater control and awareness.
 """
 tags = []
 
 [[tests]]
 id = "e013"
-name = "Flow State"
+title = "Flow State"
 difficulty = "hard"
-text = """
+content = """
 The flow state occurs when effort and skill align perfectly. Typing long passages increases the chance of entering this state. When distractions fade, the hands move automatically and errors decrease. Achieving flow requires preparation and patience. Rushing prevents it, while calm focus invites it. Terminal typing supports this process by removing unnecessary stimuli. Each session becomes a meditation on movement and timing. Flow cannot be forced, but it can be practiced.
 """
 tags = []
 
 [[tests]]
 id = "e014"
-name = "Error Cost"
+title = "Error Cost"
 difficulty = "hard"
-text = """
+content = """
 Every typing error has a cost that extends beyond the incorrect character. It disrupts rhythm, increases cognitive load, and introduces frustration. Long essays magnify this cost. A single lapse can lead to a chain of corrections. Recognizing this effect encourages more deliberate typing. Slowing slightly often results in faster completion overall. The terminal provides immediate feedback, making error cost impossible to ignore. Mastery comes from minimizing these disruptions.
 """
 tags = []
 
 [[tests]]
 id = "e015"
-name = "Control Over Speed"
+title = "Control Over Speed"
 difficulty = "hard"
-text = """
+content = """
 Speed without control is unstable. Control without speed is incomplete. Long-form typing helps balance these forces. As the text unfolds, the typist must regulate pace consciously. Surges of speed often lead to mistakes, while excessive caution leads to fatigue. Finding the middle ground requires experience. Terminal typing exposes imbalance quickly. Over time, the typist learns to adjust instinctively, maintaining smooth input from beginning to end.
 """
 tags = []
 
 [[tests]]
 id = "e016"
-name = "Deliberate Practice"
+title = "Deliberate Practice"
 difficulty = "hard"
-text = """
+content = """
 Deliberate practice differs from casual repetition. It involves attention, feedback, and correction. Long typing essays support this approach by providing continuous feedback over time. Each paragraph presents an opportunity to refine technique. Rather than chasing speed records, the typist focuses on reducing errors and maintaining rhythm. Terminal tools reinforce this mindset by stripping away distractions. Progress becomes measurable and meaningful.
 """
 tags = []
 
 [[tests]]
 id = "e017"
-name = "Terminal Mastery"
+title = "Terminal Mastery"
 difficulty = "hard"
-text = """
+content = """
 Mastery in the terminal extends beyond commands and shortcuts. It includes efficient, accurate text input. Long typing tests simulate real tasks such as writing scripts or documentation. These tasks demand patience and precision. The terminal environment rewards those who invest in foundational skills. Over time, typing becomes an extension of thought rather than a barrier. Mastery is quiet and reliable.
 """
 tags = []
 
 [[tests]]
 id = "e018"
-name = "Endurance Challenge"
+title = "Endurance Challenge"
 difficulty = "hard"
-text = """
+content = """
 Endurance challenges reveal how habits hold up under pressure. As minutes pass, posture slips and attention wavers. Long essays are designed to reach this point intentionally. The typist must recognize these changes and correct them. Small adjustments restore control. Terminal typing leaves no room for complacency. Each line demands the same care as the first. Endurance training builds confidence for extended work sessions.
 """
 tags = []
 
 [[tests]]
 id = "e019"
-name = "Precision Thinking"
+title = "Precision Thinking"
 difficulty = "hard"
-text = """
+content = """
 Precise typing reflects precise thinking. When the mind is clear, the hands follow smoothly. Long texts expose moments when thought becomes disorganized. Errors increase as clarity fades. Recognizing this relationship encourages better focus. Terminal tools emphasize precision by removing visual noise. The result is a direct connection between intention and execution. Practicing this connection improves both typing and concentration.
 """
 tags = []
 
 [[tests]]
 id = "e020"
-name = "Backspace Philosophy"
+title = "Backspace Philosophy"
 difficulty = "hard"
-text = """
+content = """
 Backspace represents correction, but also hesitation. In long typing sessions, its use becomes a pattern worth studying. Excessive correction often indicates rushing or uncertainty. Reducing backspace usage requires foresight and calm execution. Terminal typing makes this visible by tracking every action. Improvement comes from understanding when and why corrections occur. The goal is not zero errors, but controlled, intentional input throughout the session.
 """
 tags = []
