@@ -5,6 +5,6 @@ pub mod list_tests;
 /// Handles typing test related commands
 pub fn handle(commands: TestSubcommands) -> Result<(), AppError> {
     match commands {
-        TestSubcommands::Ls => list_tests::list_tests()
+        TestSubcommands::Ls => list_tests::run()
     }
 }
