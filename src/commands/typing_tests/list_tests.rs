@@ -57,10 +57,15 @@ impl<'a> From<&'a TypingTest> for TableRow<'a> {
     }
 }
 
+fn load_test_suite(file_path: &str) -> Result<TestSuite, AppError> {
+    let content = fs::read_to_string(file_path)?;
+    let suite: TestSuite = toml::from_str(&content)?;
+    Ok(suite)
+}
+
 pub fn run() -> Result<(), AppError> {
     let typing_tests_file = "./data/typing-tests/data.toml";
-    let content = fs::read_to_string(typing_tests_file)?;
-    let suite: TestSuite = toml::from_str(&content)?;
+    let suite = load_test_suite(typing_tests_file)?;
     let table_rows: Vec<TableRow> = suite.tests.iter().map(|test| TableRow::from(test)).collect();
     let mut table = Table::new(table_rows);
     println!("{}", table.with(Style::modern()).to_string());
