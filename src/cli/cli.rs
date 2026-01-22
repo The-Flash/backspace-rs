@@ -28,4 +28,6 @@ pub enum TestSubcommands {
     /// List available typing tests
     #[command(about = "List available typing tests")]
     Ls,
+    #[command(about = "Run a typing test")]
+    Run
 }

@@ -1,10 +1,12 @@
 use crate::{cli::cli::TestSubcommands, errors::AppError};
 
 pub mod list_tests;
+pub mod run_test;
 
 /// Handles typing test related commands
 pub fn handle(commands: TestSubcommands) -> Result<(), AppError> {
     match commands {
-        TestSubcommands::Ls => list_tests::run()
+        TestSubcommands::Ls => list_tests::run(),
+        TestSubcommands::Run => run_test::run()
     }
 }
