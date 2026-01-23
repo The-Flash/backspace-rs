@@ -29,5 +29,9 @@ pub enum TestSubcommands {
     #[command(about = "List available typing tests")]
     Ls,
     #[command(about = "Run a typing test")]
-    Run
+    Run {
+        /// ID of the typing test to run
+        #[arg(short, long)]
+        id: String,
+    }
 }

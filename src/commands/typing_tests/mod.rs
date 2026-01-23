@@ -7,6 +7,6 @@ pub mod run_test;
 pub fn handle(commands: TestSubcommands) -> Result<(), AppError> {
     match commands {
         TestSubcommands::Ls => list_tests::run(),
-        TestSubcommands::Run => run_test::run()
+        TestSubcommands::Run { id } => run_test::run(id.as_str())
     }
 }
