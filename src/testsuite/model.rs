@@ -1,8 +1,7 @@
+use serde::{Deserialize};
 use std::marker::PhantomData;
 
-use serde::{Deserialize};
-
-use crate::errors::AppError;
+use crate::{errors::AppError, testsuite::loader::Loader};
 
 /// Represents a suite of typing tests loaded from a TOML file.
 #[derive(Deserialize, Debug)]
@@ -12,24 +11,6 @@ pub struct TestSuite<L> {
 
     #[serde(skip)]
     _loader: PhantomData<L>
-}
-
-/// Trait for loading typing tests from a file.
-pub trait Loader {
-    /// Loads typing tests from the specified file path.
-    fn load(file_path: &str) -> Result<Vec<TypingTest>, AppError>;
-}
-
-/// Loader implementation for TOML files.
-pub struct TomlLoader;
-
-impl Loader for TomlLoader {
-    /// Loads typing tests from a TOML file.
-    fn load(file_path: &str) -> Result<Vec<TypingTest>, AppError> {
-        let content = std::fs::read_to_string(file_path)?;
-        let suite: TestSuite<Self> = toml::from_str(&content)?;
-        Ok(suite.tests)
-    }
 }
 
 impl<L> TestSuite<L> where L: Loader {

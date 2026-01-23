@@ -4,7 +4,7 @@ use tabled::{
     settings::{Style},
 };
 
-use crate::{errors::AppError, testsuite::testsuite::{Difficulty, TestSuite, TomlLoader, TypingTest}};
+use crate::{errors::AppError, testsuite::{Difficulty, TestSuite, TomlLoader, TypingTest}};
 
 #[derive(Debug, Tabled)]
 struct TableRow<'a> {
