@@ -30,7 +30,7 @@ impl<'a> From<&'a TypingTest> for TableRow<'a> {
 pub fn run() -> Result<(), AppError> {
     let typing_tests_file = "./data/typing-tests/data.toml";
     let suite = TestSuite::<TomlLoader>::load(typing_tests_file)?;
-    let table_rows: Vec<TableRow> = suite.tests.iter().map(|test| TableRow::from(test)).collect();
+    let table_rows: Vec<TableRow> = suite.tests.into_iter().map(TableRow::from).collect();
     let mut table = Table::new(table_rows);
     println!("{}", table.with(Style::modern()).to_string());
     Ok(())

@@ -3,11 +3,14 @@ use std::marker::PhantomData;
 
 use crate::{errors::AppError, testsuite::loader::Loader};
 
+#[derive(Deserialize, Debug)]
+pub struct TypingTests(Vec<TypingTest>);
+
 /// Represents a suite of typing tests loaded from a TOML file.
 #[derive(Deserialize, Debug)]
 pub struct TestSuite<L> {
     /// List of typing tests in the suite.
-    pub tests: Vec<TypingTest>,
+    pub tests: TypingTests,
 
     #[serde(skip)]
     _loader: PhantomData<L>
@@ -20,6 +23,15 @@ impl<L> TestSuite<L> where L: Loader {
             tests,
             _loader: PhantomData
         })
+    }
+}
+
+impl<'a> IntoIterator for &'a TypingTests {
+    type Item = &'a TypingTest;
+    type IntoIter = std::slice::Iter<'a, TypingTest>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.iter()
     }
 }
 
