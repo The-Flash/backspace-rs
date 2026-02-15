@@ -1,16 +1,20 @@
 use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
-use ratatui::{buffer::Buffer, layout::Rect, style::Stylize, text::Line, widgets::{Paragraph, Widget}, DefaultTerminal};
+use ratatui::{buffer::Buffer, layout::Rect, widgets::{Block, Borders, Widget}, DefaultTerminal};
 
 use crate::{errors::AppError, testsuite::{TestSuite, TomlLoader}};
 
-
-#[derive(Debug)]
-pub struct App {
-    exit: bool,
-    pub typing_test: String,
+enum Action {
+    Exit,
+    SetTypingTest(String),
 }
 
-impl App {
+#[derive(Debug)]
+struct Store {
+    exit: bool,
+    typing_test: String,
+}
+
+impl Store {
     fn new(test_str: &str) -> Self {
         Self {
             exit: false,
@@ -18,8 +22,47 @@ impl App {
         }
     }
 
+    fn update(&mut self, action: Action) {
+        match action {
+            Action::Exit => self.exit = true,
+            Action::SetTypingTest(test_str) => self.typing_test = test_str,
+        }
+    }
+}
+
+#[derive(Debug)]
+struct Dispatcher {
+    store: Store,
+}
+
+impl Dispatcher {
+    fn dispatch(&mut self, action: Action) {
+        self.store.update(action);
+    }
+}
+
+
+#[derive(Debug)]
+pub struct App {
+    dispatcher: Dispatcher,
+}
+
+impl App {
+    fn new(typing_test_str: &str) -> Self {
+        let store = Store::new("");
+        let mut dispatcher = Dispatcher { store };
+        dispatcher.dispatch(Action::SetTypingTest(String::from(typing_test_str)));
+        Self {
+            dispatcher,
+       }
+    }
+
+    fn store(&self) -> &Store {
+        &self.dispatcher.store
+    } 
+
     fn run(&mut self, terminal: &mut DefaultTerminal) -> std::io::Result<()> {
-        while !self.exit {
+        while !self.store().exit {
             terminal.draw(|frame| self.draw(frame))?;
             self.handle_events()?;
         }
@@ -43,7 +86,7 @@ impl App {
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
             crossterm::event::KeyCode::Char('q') => {
-                self.exit = true;
+                self.dispatcher.dispatch(Action::Exit);
             }
             _ => {}
         }
@@ -52,8 +95,11 @@ impl App {
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let title = Line::from("Backspace".bold());
-        Paragraph::new(title).render(area, buf);
+        let main_block = Block::default()
+            .borders(Borders::ALL)
+            .title("Backspace")
+            .title_alignment(ratatui::layout::Alignment::Center);
+        main_block.render(area, buf);
     }
 }
 
@@ -63,7 +109,9 @@ pub fn run(id: &str) -> Result<(), AppError> {
     let suite = TestSuite::<TomlLoader>::load(typing_tests_file)?;
     if let Some(typing_test) = suite.tests.into_iter()
         .find(|test| test.id == id) {
-        ratatui::run(|terminal| App::new(typing_test.content.as_str()).run(terminal))?;
+        ratatui::run(|terminal| {
+                App::new(&typing_test.content).run(terminal)
+        })?;
         Ok(())
     } else {
         println!("Typing test with id '{}' not found.", id);
