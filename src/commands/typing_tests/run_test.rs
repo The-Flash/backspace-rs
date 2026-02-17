@@ -1,13 +1,15 @@
-use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
-use ratatui::{buffer::Buffer, layout::Rect, widgets::{Block, Borders, Widget}, DefaultTerminal};
+use crossterm::{event::{self, Event, KeyEvent, KeyEventKind}};
+use ratatui::{buffer::Buffer, layout::Rect, style::Stylize, text::Line, widgets::{Block, Paragraph, Widget, Wrap}, DefaultTerminal};
 
 use crate::{errors::AppError, testsuite::{TestSuite, TomlLoader}};
 
+/// The `Action` enum defines the possible actions that can be dispatched to update the state of
+/// the application.
 enum Action {
     Exit,
-    SetTypingTest(String),
 }
 
+/// The `Store` struct holds the state of the application, 
 #[derive(Debug)]
 struct Store {
     exit: bool,
@@ -25,11 +27,11 @@ impl Store {
     fn update(&mut self, action: Action) {
         match action {
             Action::Exit => self.exit = true,
-            Action::SetTypingTest(test_str) => self.typing_test = test_str,
         }
     }
 }
 
+/// The `Dispatcher` struct is responsible for dispatching actions to the store to update the state of
 #[derive(Debug)]
 struct Dispatcher {
     store: Store,
@@ -49,9 +51,8 @@ pub struct App {
 
 impl App {
     fn new(typing_test_str: &str) -> Self {
-        let store = Store::new("");
-        let mut dispatcher = Dispatcher { store };
-        dispatcher.dispatch(Action::SetTypingTest(String::from(typing_test_str)));
+        let store = Store::new(typing_test_str);
+        let dispatcher = Dispatcher { store };
         Self {
             dispatcher,
        }
@@ -85,7 +86,7 @@ impl App {
 
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
-            crossterm::event::KeyCode::Char('q') => {
+            crossterm::event::KeyCode::Esc => {
                 self.dispatcher.dispatch(Action::Exit);
             }
             _ => {}
@@ -95,12 +96,17 @@ impl App {
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let main_block = Block::default()
-            .borders(Borders::ALL)
-            .title("Backspace")
-            .title_alignment(ratatui::layout::Alignment::Center);
-        main_block.render(area, buf);
-    }
+        let main_block = Block::bordered()
+            .padding(ratatui::widgets::Padding { top: 2, bottom: 2, left: 4, right: 4 })
+            .title_top(Line::from("Backspace").centered())
+            .title_bottom(Line::from("Press <Esc> to exit").centered());
+        // render each line of the typing test as a separate paragraph
+        let typing_test = self.store().typing_test.as_str();
+        Paragraph::new(typing_test.green())
+            .wrap(Wrap { trim: true })
+            .block(main_block)
+            .render(area, buf);
+}
 }
 
 pub fn run(id: &str) -> Result<(), AppError> {
