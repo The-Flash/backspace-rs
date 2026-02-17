@@ -1,5 +1,5 @@
 use crossterm::{event::{self, Event, KeyEvent, KeyEventKind}};
-use ratatui::{buffer::Buffer, layout::Rect, style::Stylize, text::Line, widgets::{Block, Paragraph, Widget, Wrap}, DefaultTerminal};
+use ratatui::{buffer::Buffer, layout::Rect, style::Style, text::{Line, Span}, widgets::{Block, Borders, Widget}, DefaultTerminal};
 
 use crate::{errors::AppError, testsuite::{TestSuite, TomlLoader}};
 
@@ -14,6 +14,7 @@ enum Action {
 struct Store {
     exit: bool,
     typing_test: String,
+    current_typing_index: usize,
 }
 
 impl Store {
@@ -21,6 +22,7 @@ impl Store {
         Self {
             exit: false,
             typing_test: String::from(test_str),
+            current_typing_index: 0,
         }
     }
 
@@ -96,18 +98,29 @@ impl App {
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let main_block = Block::bordered()
+        let main_block = Block::new().borders(Borders::all())
             .padding(ratatui::widgets::Padding { top: 2, bottom: 2, left: 4, right: 4 })
             .title_top(Line::from("Backspace").centered())
             .title_bottom(Line::from("Press <Esc> to exit").centered());
-        // render each line of the typing test as a separate paragraph
-        let typing_test = self.store().typing_test.as_str();
-        Paragraph::new(typing_test.green())
-            .wrap(Wrap { trim: true })
-            .block(main_block)
-            .render(area, buf);
+        let _typing_test = self.store().typing_test.as_str();
+        main_block.render(area, buf);
+     }
 }
+
+
+#[derive(Debug)]
+struct TypingTestChar {
+    character: String,
 }
+
+impl Widget for &TypingTestChar {
+    fn render(self, area: Rect, buf: &mut Buffer) {
+        let style = Style::new().gray();
+        let span = Span::styled(self.character.as_str(), style);
+        span.render(area, buf);
+   }
+}
+
 
 pub fn run(id: &str) -> Result<(), AppError> {
     println!("Running typing test {}...", id);
