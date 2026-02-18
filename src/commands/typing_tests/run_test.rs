@@ -3,8 +3,8 @@ use ratatui::{
     DefaultTerminal,
     buffer::Buffer,
     layout::Rect,
-    text::Line,
-    widgets::{Block, Borders, Widget},
+    text::{Line, Span, Text},
+    widgets::{Block, Borders, Paragraph, Widget},
 };
 
 use crate::{
@@ -17,6 +17,8 @@ use crate::{
 enum Action {
     Exit,
     MoveIndexForward,
+    CharacterTypingError(usize),
+    CharacterTypingSuccess(usize),
 }
 
 /// The `Store` struct holds the state of the application,
@@ -25,6 +27,8 @@ struct Store {
     exit: bool,
     typing_test: String,
     current_typing_index: usize,
+    success_indices: Vec<usize>,
+    error_indices: Vec<usize>,
 }
 
 impl Store {
@@ -33,6 +37,8 @@ impl Store {
             exit: false,
             typing_test: String::from(test_str),
             current_typing_index: 0,
+            success_indices: Vec::new(),
+            error_indices: Vec::new(),
         }
     }
 
@@ -40,6 +46,8 @@ impl Store {
         match action {
             Action::Exit => self.exit = true,
             Action::MoveIndexForward => self.current_typing_index += 1,
+            Action::CharacterTypingError(index) => self.error_indices.push(index),
+            Action::CharacterTypingSuccess(index) => self.success_indices.push(index),
         }
     }
 }
@@ -100,9 +108,22 @@ impl App {
         match key_event.code {
             crossterm::event::KeyCode::Esc => {
                 self.dispatcher.dispatch(Action::Exit);
+                return;
+            }
+            crossterm::event::KeyCode::Char(c) => {
+                let state = self.store();
+                let correct_char = state.typing_test.chars().nth(state.current_typing_index);
+                if Some(c) == correct_char {
+                    self.dispatcher
+                        .dispatch(Action::CharacterTypingSuccess(state.current_typing_index));
+                } else {
+                    self.dispatcher
+                        .dispatch(Action::CharacterTypingError(state.current_typing_index));
+                }
+                self.dispatcher.dispatch(Action::MoveIndexForward);
             }
             _ => {
-                self.dispatcher.dispatch(Action::MoveIndexForward);
+                return;
             }
         }
     }
@@ -120,8 +141,29 @@ impl Widget for &App {
             })
             .title_top(Line::from("Backspace").centered())
             .title_bottom(Line::from("Press <Esc> to exit").centered());
-        let _typing_test = self.store().typing_test.as_str();
+        let typing_test = self.store().typing_test.as_str();
+
+        let inner_area = main_block.inner(area);
         main_block.render(area, buf);
+
+        let spans: Vec<Span> = typing_test
+            .chars()
+            .enumerate()
+            .map(|(i, c)| {
+                let style = if self.store().success_indices.contains(&i) {
+                    ratatui::style::Style::default().fg(ratatui::style::Color::White)
+                } else if self.store().error_indices.contains(&i) {
+                    ratatui::style::Style::default().fg(ratatui::style::Color::Red)
+                } else {
+                    ratatui::style::Style::default().fg(ratatui::style::Color::Rgb(100, 102, 105))
+                };
+                Span::styled(c.to_string(), style)
+            })
+            .collect();
+
+        let text = Text::from(Line::from(spans));
+        let p = Paragraph::new(text).wrap(ratatui::widgets::Wrap { trim: true });
+        p.render(inner_area, buf);
     }
 }
 
