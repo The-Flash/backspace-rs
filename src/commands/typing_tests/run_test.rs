@@ -1,15 +1,25 @@
-use crossterm::{event::{self, Event, KeyEvent, KeyEventKind}};
-use ratatui::{buffer::Buffer, layout::Rect, style::Style, text::{Line, Span}, widgets::{Block, Borders, Widget}, DefaultTerminal};
+use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
+use ratatui::{
+    DefaultTerminal,
+    buffer::Buffer,
+    layout::Rect,
+    text::Line,
+    widgets::{Block, Borders, Widget},
+};
 
-use crate::{errors::AppError, testsuite::{TestSuite, TomlLoader}};
+use crate::{
+    errors::AppError,
+    testsuite::{TestSuite, TomlLoader},
+};
 
 /// The `Action` enum defines the possible actions that can be dispatched to update the state of
 /// the application.
 enum Action {
     Exit,
+    MoveIndexForward,
 }
 
-/// The `Store` struct holds the state of the application, 
+/// The `Store` struct holds the state of the application,
 #[derive(Debug)]
 struct Store {
     exit: bool,
@@ -29,6 +39,7 @@ impl Store {
     fn update(&mut self, action: Action) {
         match action {
             Action::Exit => self.exit = true,
+            Action::MoveIndexForward => self.current_typing_index += 1,
         }
     }
 }
@@ -45,7 +56,6 @@ impl Dispatcher {
     }
 }
 
-
 #[derive(Debug)]
 pub struct App {
     dispatcher: Dispatcher,
@@ -55,14 +65,12 @@ impl App {
     fn new(typing_test_str: &str) -> Self {
         let store = Store::new(typing_test_str);
         let dispatcher = Dispatcher { store };
-        Self {
-            dispatcher,
-       }
+        Self { dispatcher }
     }
 
     fn store(&self) -> &Store {
         &self.dispatcher.store
-    } 
+    }
 
     fn run(&mut self, terminal: &mut DefaultTerminal) -> std::io::Result<()> {
         while !self.store().exit {
@@ -78,8 +86,10 @@ impl App {
 
     fn handle_events(&mut self) -> std::io::Result<()> {
         match event::read()? {
-            Event::Key(key_event) => if key_event.kind == KeyEventKind::Press {
-                self.handle_key_event(key_event);
+            Event::Key(key_event) => {
+                if key_event.kind == KeyEventKind::Press {
+                    self.handle_key_event(key_event);
+                }
             }
             _ => {}
         }
@@ -91,46 +101,37 @@ impl App {
             crossterm::event::KeyCode::Esc => {
                 self.dispatcher.dispatch(Action::Exit);
             }
-            _ => {}
+            _ => {
+                self.dispatcher.dispatch(Action::MoveIndexForward);
+            }
         }
     }
 }
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let main_block = Block::new().borders(Borders::all())
-            .padding(ratatui::widgets::Padding { top: 2, bottom: 2, left: 4, right: 4 })
+        let main_block = Block::new()
+            .borders(Borders::all())
+            .padding(ratatui::widgets::Padding {
+                top: 2,
+                bottom: 2,
+                left: 4,
+                right: 4,
+            })
             .title_top(Line::from("Backspace").centered())
             .title_bottom(Line::from("Press <Esc> to exit").centered());
         let _typing_test = self.store().typing_test.as_str();
         main_block.render(area, buf);
-     }
+    }
 }
-
-
-#[derive(Debug)]
-struct TypingTestChar {
-    character: String,
-}
-
-impl Widget for &TypingTestChar {
-    fn render(self, area: Rect, buf: &mut Buffer) {
-        let style = Style::new().gray();
-        let span = Span::styled(self.character.as_str(), style);
-        span.render(area, buf);
-   }
-}
-
 
 pub fn run(id: &str) -> Result<(), AppError> {
     println!("Running typing test {}...", id);
     let typing_tests_file = "./data/typing-tests/data.toml";
     let suite = TestSuite::<TomlLoader>::load(typing_tests_file)?;
-    if let Some(typing_test) = suite.tests.into_iter()
-        .find(|test| test.id == id) {
-        ratatui::run(|terminal| {
-                App::new(&typing_test.content).run(terminal)
-        })?;
+    if let Some(typing_test) = suite.tests.into_iter().find(|test| test.id == id) {
+        ratatui::run(|terminal| App::new(&typing_test.content).run(terminal))?;
+        ratatui::restore();
         Ok(())
     } else {
         println!("Typing test with id '{}' not found.", id);
