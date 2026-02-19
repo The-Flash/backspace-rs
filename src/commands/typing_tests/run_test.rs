@@ -3,6 +3,7 @@ use ratatui::{
     DefaultTerminal,
     buffer::Buffer,
     layout::Rect,
+    style::{Color, Modifier},
     text::{Line, Span, Text},
     widgets::{Block, Borders, Paragraph, Widget},
 };
@@ -151,11 +152,16 @@ impl Widget for &App {
             .enumerate()
             .map(|(i, c)| {
                 let style = if self.store().success_indices.contains(&i) {
-                    ratatui::style::Style::default().fg(ratatui::style::Color::White)
+                    ratatui::style::Style::default().fg(Color::White)
+                } else if self.store().current_typing_index == i {
+                    ratatui::style::Style::default()
+                        .fg(Color::White)
+                        .bg(Color::Rgb(100, 102, 105))
+                        .add_modifier(Modifier::BOLD)
                 } else if self.store().error_indices.contains(&i) {
-                    ratatui::style::Style::default().fg(ratatui::style::Color::Red)
+                    ratatui::style::Style::default().fg(Color::Red)
                 } else {
-                    ratatui::style::Style::default().fg(ratatui::style::Color::Rgb(100, 102, 105))
+                    ratatui::style::Style::default().fg(Color::Rgb(100, 102, 105))
                 };
                 Span::styled(c.to_string(), style)
             })
