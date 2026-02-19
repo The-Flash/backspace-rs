@@ -1,3 +1,5 @@
+use std::time::{Duration, Instant};
+
 use crossterm::event::{self, Event, KeyEvent, KeyEventKind};
 use ratatui::{
     DefaultTerminal,
@@ -68,13 +70,19 @@ impl Dispatcher {
 #[derive(Debug)]
 pub struct App {
     dispatcher: Dispatcher,
+    cursor_visible: bool,
+    last_cursor_toggle: Instant,
 }
 
 impl App {
     fn new(typing_test_str: &str) -> Self {
         let store = Store::new(typing_test_str);
         let dispatcher = Dispatcher { store };
-        Self { dispatcher }
+        Self {
+            dispatcher,
+            cursor_visible: true,
+            last_cursor_toggle: Instant::now(),
+        }
     }
 
     fn store(&self) -> &Store {
@@ -85,6 +93,10 @@ impl App {
         while !self.store().exit {
             terminal.draw(|frame| self.draw(frame))?;
             self.handle_events()?;
+            if self.last_cursor_toggle.elapsed() >= Duration::from_millis(300) {
+                self.cursor_visible = !self.cursor_visible;
+                self.last_cursor_toggle = Instant::now();
+            }
         }
         Ok(())
     }
@@ -94,13 +106,15 @@ impl App {
     }
 
     fn handle_events(&mut self) -> std::io::Result<()> {
-        match event::read()? {
-            Event::Key(key_event) => {
-                if key_event.kind == KeyEventKind::Press {
-                    self.handle_key_event(key_event);
+        if event::poll(Duration::from_millis(50))? {
+            match event::read()? {
+                Event::Key(key_event) => {
+                    if key_event.kind == KeyEventKind::Press {
+                        self.handle_key_event(key_event);
+                    }
                 }
+                _ => {}
             }
-            _ => {}
         }
         Ok(())
     }
@@ -153,7 +167,7 @@ impl Widget for &App {
             .map(|(i, c)| {
                 let style = if self.store().success_indices.contains(&i) {
                     ratatui::style::Style::default().fg(Color::White)
-                } else if self.store().current_typing_index == i {
+                } else if self.store().current_typing_index == i && self.cursor_visible {
                     ratatui::style::Style::default()
                         .fg(Color::White)
                         .bg(Color::Rgb(100, 102, 105))
